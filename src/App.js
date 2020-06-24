@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {Router} from 'react-router-dom';
+import React, {Component, useEffect} from 'react';
+import { Router} from 'react-router-dom';
 import {createBrowserHistory} from 'history';
 import {Chart} from 'react-chartjs-2';
 import {ThemeProvider} from '@material-ui/styles';
 import validate from 'validate.js';
-
+import setAuthToken from './utils/setAuthToken';
 import {chartjs} from './helpers';
 import theme from './theme';
 import 'react-perfect-scrollbar/dist/css/styles.css';
@@ -14,6 +14,7 @@ import Routes from './Routes';
 //redux
 import {Provider} from 'react-redux';
 import store from './store';
+import {loadUser} from './actions/auth';
 
 const browserHistory = createBrowserHistory ();
 
@@ -26,16 +27,23 @@ validate.validators = {
   ...validators,
 };
 
-export default class App extends Component {
-  render () {
-    return (
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <Router history={browserHistory}>
-            <Routes />
-          </Router>
-        </ThemeProvider>
-      </Provider>
-    );
-  }
-}
+
+const App = () => {
+
+  useEffect(() => {
+    setAuthToken(localStorage.token)
+    store.dispatch(loadUser())
+  }, [])
+
+  return (
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <Router history={browserHistory}>
+          <Routes />
+        </Router>
+      </ThemeProvider>
+    </Provider>
+  );
+};
+
+export default App;

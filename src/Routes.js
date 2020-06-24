@@ -1,69 +1,34 @@
 import React from 'react';
-import { Switch, Redirect } from 'react-router-dom';
-
-import { RouteWithLayout } from './components';
-import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
+import {Switch, Redirect} from 'react-router-dom';
+import {PrivateRouteWithLayout} from './components';
+import {RouteWithLayout} from './components';
+import {Main as MainLayout, Minimal as MinimalLayout} from './layouts';
 
 import {
   Dashboard as DashboardView,
   ProductList as ProductListView,
   UserList as UserListView,
+  Brands as BrandsListView,
+  Products as ProductsView,
+  Product as ProductView,
   Account as AccountView,
   SignUp as SignUpView,
   SignIn as SignInView,
-  NotFound as NotFoundView
+  NotFound as NotFoundView,
 } from './views';
 
-const Routes = () => {
+const Routes = props => {
   return (
     <Switch>
-      <Redirect
-        exact
-        from="/"
-        to="/dashboard"
-      />
+      <Redirect exact from="/" to="/dashboard" />
+
       <RouteWithLayout
-        component={DashboardView}
+        component={NotFoundView}
         exact
-        layout={MainLayout}
-        path="/dashboard"
+        layout={MinimalLayout}
+        path="/not-found"
       />
-      <RouteWithLayout
-        component={UserListView}
-        exact
-        layout={MainLayout}
-        path="/users"
-      />
-      <RouteWithLayout
-        component={ProductListView}
-        exact
-        layout={MainLayout}
-        path="/products"
-      />
-      {/* <RouteWithLayout
-        component={TypographyView}
-        exact
-        layout={MainLayout}
-        path="/typography"
-      />
-      <RouteWithLayout
-        component={IconsView}
-        exact
-        layout={MainLayout}
-        path="/icons"
-      /> */}
-      <RouteWithLayout
-        component={AccountView}
-        exact
-        layout={MainLayout}
-        path="/account"
-      />
-      {/* <RouteWithLayout
-        component={SettingsView}
-        exact
-        layout={MainLayout}
-        path="/settings"
-      /> */}
+
       <RouteWithLayout
         component={SignUpView}
         exact
@@ -76,12 +41,58 @@ const Routes = () => {
         layout={MinimalLayout}
         path="/sign-in"
       />
-      <RouteWithLayout
-        component={NotFoundView}
+      <PrivateRouteWithLayout
+        component={DashboardView}
         exact
-        layout={MinimalLayout}
-        path="/not-found"
+        layout={MainLayout}
+        path="/dashboard"
       />
+      <PrivateRouteWithLayout
+        component={UserListView}
+        exact
+        layout={MainLayout}
+        path="/users"
+      />
+      <PrivateRouteWithLayout
+        component={ProductListView}
+        exact
+        layout={MainLayout}
+        path="/products"
+      />
+
+      <PrivateRouteWithLayout
+        component={ProductView}
+        exact
+        layout={MainLayout}
+        path="/productswip/:id"
+      />
+      <PrivateRouteWithLayout
+        component={ProductsView}
+        exact
+        layout={MainLayout}
+        path="/productswip"
+      />
+
+      <PrivateRouteWithLayout
+        component={BrandsListView}
+        exact
+        layout={MainLayout}
+        path="/brands"
+      />
+      <PrivateRouteWithLayout
+        component={AccountView}
+        exact
+        layout={MainLayout}
+        path="/account"
+      />
+      {/* <RouteWithLayout
+        component={SettingsView}
+        exact
+        layout={MainLayout}
+        path="/settings"
+      /> */}
+
+      
       <Redirect to="/not-found" />
     </Switch>
   );
